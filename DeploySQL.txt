@@ -1,0 +1,52 @@
+# [ValidateCount (1,1)]   used when the parameter is an array
+#Install-Module -Name MicrosoftTeams
+#Find-Module -Name Microsoftteams | Install-Module -AllowClobber -Force
+#Get-Command -Module Microsoftteams
+
+
+
+function Deploy-SQL {
+    [CmdletBinding()]
+    param( 
+    [Parameter(mandatory,ValueFromPipelineByPropertyName)]
+    [ValidateSet ('LGNRDB03','LGHBDVDB06')]
+    [string] $ComputerName ,
+    
+    [Parameter(ValueFromPipelineByPropertyName)]
+    [ValidateNotNullOrEmpty()]
+    [string]  $Query
+    )
+
+    process{
+     Write-Output "SQL Deloyed! on $ComputerName"
+   }
+}
+
+
+
+function Get-OperatingSystem {
+    param(
+        [Parameter()]
+        [ValidateNotNullOrEmpty()]
+        [string]$ComputerName
+    )
+
+    (Get-CimInstane -ComputerName $ComputerName -Class 'Win32_OperatingSystem').Caption
+}
+
+ Get-OperatingSystem -ComputerName LGHBDVDB06
+
+ Deploy-SQL -ComputerName LGNRDB03 -Query 'SELECT GETDATE()'
+
+
+
+Get-ADUser 
+get-aduser -Identity SQLServerMonitor -properties passwordlastset, passwordneverexpires
+
+Connect-MsolService
+
+
+
+
+Start-Job -Name 'Monitor LGNRDB03' -ScriptBlock { $PSVersionTable.PSVersion}
+Get-Job

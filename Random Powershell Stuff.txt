@@ -1,0 +1,104 @@
+--https://powershellexplained.com/2017-05-27-Powershell-module-building-basics/
+
+Get-InstalledModule |   Out-GridView -PassThru  -Title 'My Powershell Modules'  |  Update-Module -WhatIf 
+
+Update-Module dbatools -Force
+Find-DbaCommand Service
+
+#Test-DbaSpn -ComputerName LGNRDB02
+#setspn -L LGNRDB02
+#Update-Module dbatools
+#Get-Module dbatools
+#Get-Command -Module ReportingServicesTools
+Get-Help Get-RsItemReferences -ReportServerUri 'http://oc-syd-sql-ps5.miracle.local/ReportServer' -Path '/AnalysisReports'
+Get-RsCatalogItems -ReportServerUri 'http://lghbdb17/ReportServer' -RsFolder '/'
+Get-RsCatalogItems -ReportServerUri 'http://lghbdb17/ReportServer' -RsFolder '/Operations'
+#Get-DbaLastBackup -SqlInstance 'SQLCLUSTER7.miracle.local\Jaguar' | Format-Table
+#Get-DbaLastGoodCheckDb -SqlInstance 'LGNRDB02'| Format-Table
+ 
+
+Get-RsCatalogItems -ReportServerUri 'http://oc-syd-sql-ps5.miracle.local/ReportServer' -RsFolder '/'
+Get-RsCatalogItems -ReportServerUri 'http://oc-syd-sql-ps5.miracle.local/ReportServer' -RsFolder '/AnalysisReports' 
+
+$S = Get-Command -Module DbaTools 
+$S.Count
+
+Get-DbaSPN -AccountName APAC\SQL_LGNRDB02_svc | Format-Table
+Get-DbaSPN -AccountName APAC\SQL_LGHBDB02_svc | Format-Table
+
+Set-DbaSpn -SPN http/LGNRDB02 -ServiceAccount  APAC\SQL_LGNRDB02_svc  -WhatIf
+
+#Get-DbaAgentJob -SqlInstance 'PRDLGDWRODB1' -Job 'REST AWS MC Extracts' 
+#Start-DbaAgentJob -SqlInstance 'PRDLGDWRODB1' -Job 'REST AWS MC Extracts'  -WhatIf 
+
+Get-DbaAgentJob -SqlInstance 'LGHBDB17' -Job 'Dummy' 
+Get-DbaRunningJob -SqlInstance 'LGHBDB17'  
+
+Get-DbaAgentJob -SqlInstance 'PRDLGDWRODB1' -Job 'REST AWS MC Extracts' 
+Get-DbaRunningJob -SqlInstance 'PRDLGDWRODB1'  
+
+Get-DbaAgentJob -SqlInstance 'LGHBDB17' -Job 'Run Process MC Extracts' 
+Get-DbaAgentJobStep -SqlInstance 'LGHBDB17' -Job 'Run Process MC Extracts' 
+
+Start-DbaAgentJob -SqlInstance 'LGHBDB17' -Job 'Dummy'  -WhatIf 
+
+
+#ConvertTo-DbaDataTable
+
+Get-DbaService -ComputerName LGHBDB17 -AdvancedProperties  | Format-Table
+Find-DbaInstance -DiscoveryType Domain
+
+Install-module PSGet 
+
+import-module PSUrl
+
+ git status
+
+ git pull
+
+
+
+
+
+
+$BaseSVNpath = 'C:\PegaSVN'
+
+$Release = '19.08.03'
+$RevisionToGet = 97
+
+svn info "$BaseSVNpath\$Release\Upgradescripts"
+
+cd $BaseSVNpath 
+
+[xml] $RevisionList = svn log  --verbose --xml -r $RevisionToGet 
+
+$RevisionFileList = $RevisionList.log.logentry.paths.path | Where-Object -Property 'action' -NE 'D' 
+
+$SVNCommitUser = $RevisionList.log.logentry.author
+$SVNCommitDate = $RevisionList.log.logentry.date
+
+ 
+
+
+
+
+
+
+Get-DbaDiskSpace -ComputerName DSDEVDB01
+
+Resolve-DnsName -Name DSDEVDB01
+
+$ip  = '10.150.164.254'
+
+[system.net.dns]::GetHostByAddress('10.150.164.254')
+
+[System.Net.Dns]::gethostentry("$ip")
+
+
+Get-DbaSpn -ComputerName LGNRDB27
+
+
+
+Get-DbaDbMailProfile -SqlInstance LGNRDB03 
+
+

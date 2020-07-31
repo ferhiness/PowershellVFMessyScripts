@@ -1,0 +1,29 @@
+
+Start-DbaAgentJob -SqlInstance LGHBDB17 -Job 'Run Process MC Extracts'
+
+Get-JiraIssue -Key "IT-50593"
+$Me = Get-JiraUser
+
+$Me.Key
+
+Get-JiraIssue -Filter ''
+
+
+
+Get-WmiObject win32_service -ComputerName LGNRDB03 
+
+Get-Service -ComputerName LGNRDB03
+
+Get-Service -ComputerName LGHBDB03
+
+
+Start-Service -Name MSSQLSERVER -
+
+Get-Service -Name TermService -ComputerName LGNRDB03 | Stop-service -Force 
+
+
+Get-Service -Name RemoteAccess -ComputerName LGNRDB03 | Set-Service -Status Running
+
+Test-Connection LGNRDB03
+
+ping lgnrdb03
